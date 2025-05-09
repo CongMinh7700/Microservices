@@ -1,14 +1,13 @@
-﻿using Contracts.Common.Interfaces;
-using Infrastructure.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Product.API.Persistence;
-using Product.API.Repositories;
-using Product.API.Repositories.Interfaces;
 
 namespace Product.API.Extensions;
-
+using Contracts.Common.Interfaces;
+using Infrastructure.Common;
+using Persistence;
+using Repositories;
+using Repositories.Interfaces;
 // Trợ cho program file
 public static class ServiceExtensions
 {
@@ -22,6 +21,7 @@ public static class ServiceExtensions
         services.AddSwaggerGen();
         services.ConfigureProductDbContext(configuration);
         services.AddIfractructureServices();
+        services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
         return services;
     }

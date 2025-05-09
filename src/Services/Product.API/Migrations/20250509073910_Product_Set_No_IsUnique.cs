@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Product.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_ProductDB : Migration
+    public partial class Product_Set_No_IsUnique : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +34,12 @@ namespace Product.API.Migrations
                     table.PrimaryKey("PK_Products", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_No",
+                table: "Products",
+                column: "No",
+                unique: true);
         }
 
         /// <inheritdoc />

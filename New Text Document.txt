@@ -10,6 +10,8 @@ dotnet run
 
 // Migration
 dotnet ef migrations add "Init_ProductDB"
+//
+dotnet ef migrations add "Product_Set_No_IsUnique"
 
 // Update db
 dotnet ef database update

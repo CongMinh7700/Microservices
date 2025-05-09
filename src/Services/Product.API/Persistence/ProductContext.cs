@@ -13,6 +13,11 @@ public class ProductContext : DbContext
 
     public DbSet<CatalogProduct> Products { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<CatalogProduct>().HasIndex(p => p.No).IsUnique();
+    }
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var modified = ChangeTracker.Entries()
@@ -33,7 +38,7 @@ public class ProductContext : DbContext
                     break;
 
                 case EntityState.Modified:
-                    Entry(item.Entity).Property("Id").IsModified = true;
+                    Entry(item.Entity).Property("Id").IsModified = false;
                     if (item.Entity is IDateTracking modifiedEntity)
                     {
                         modifiedEntity.LastModifiedDate = DateTime.UtcNow;
