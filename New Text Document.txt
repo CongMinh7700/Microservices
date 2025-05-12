@@ -4,14 +4,20 @@ cd src/
 docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --remove-orphans (bật)
 docker compose down (tắt)
 
+docker compose -f docker-compose.yml -f docker-compose.override.yml up -d --remove-orphans --build (bật)
+
 // Run
 dotnet run
 
-
+//Product
 // Migration
 dotnet ef migrations add "Init_ProductDB"
 //
 dotnet ef migrations add "Product_Set_No_IsUnique"
+
+// Customer
+dotnet ef migrations add "Init_CustomerDB"
+
 
 // Update db
 dotnet ef database update
