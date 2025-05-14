@@ -1,5 +1,6 @@
-using Common.Logging;
+﻿using Common.Logging;
 using Contracts.Common.Interfaces;
+using Customer.API.Controllers;
 using Customer.API.Persistence;
 using Customer.API.Repositories;
 using Customer.API.Repositories.Interfaces;
@@ -8,7 +9,6 @@ using Customer.API.Services.Interfaces;
 using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(SeriLogger.Configure);
@@ -26,6 +26,8 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
     builder.Services.AddDbContext<CustomerContext>(options => options.UseNpgsql(connectionString));
 
+    builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
     builder.Services.AddScoped<ICustomerRepository, CustomerRepository>()
         .AddScoped(typeof(IRepositoryBaseAsync<,,>), typeof(RepositoryBaseAsync<,,>))
         .AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>))
@@ -36,14 +38,7 @@ try
 
     app.MapGet("/", () => "Get Customer API");
 
-    app.MapGet("/api/customers", async (ICustomerService customerService)
-        => await customerService.GetCustomersAsync());
-
-    app.MapGet("/api/customers/{username}", async (string username, ICustomerService customerService)
-        => await customerService.GetCustomerByUsernameAsync(username));
-    //app.MapPost("/", () => "Get Customer API");
-    //app.MapPut("/", () => "Get Customer API");
-    //app.MapDelete("/", () => "Get Customer API");
+    app.MapCustomerAPI();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -52,7 +47,7 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
 
     app.UseAuthorization();
 

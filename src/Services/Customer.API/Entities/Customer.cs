@@ -1,6 +1,6 @@
-﻿using Contracts.Domains;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Contracts.Domains;
 
 namespace Customer.API.Entities;
 
